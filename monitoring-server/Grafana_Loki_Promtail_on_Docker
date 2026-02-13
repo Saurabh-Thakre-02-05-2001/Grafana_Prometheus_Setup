@@ -1,5 +1,4 @@
 #!/bin/bash
-# Filename: setup-monitoring.sh
 # Description: Setup Grafana Loki + Promtail on Docker
 
 set -e
