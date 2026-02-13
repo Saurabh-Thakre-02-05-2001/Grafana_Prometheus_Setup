@@ -12,7 +12,7 @@ All scripts are automated and can be run on **Monitoring Server** and **Worker N
 ---
 
 ## 📁 Repository Structure
-
+```
 .
 ├── monitoring-server/
 │ └── setup-monitoring.sh # Prometheus + Grafana setup
@@ -21,10 +21,10 @@ All scripts are automated and can be run on **Monitoring Server** and **Worker N
 │ └── setup-worker.sh # Node Exporter setup
 │ └── uninstall-worker.sh # Cleanup script
 └── README.md
-
+```
 ---
 
-## 🖥 1️⃣ Monitoring Server Setup
+*🖥 1️⃣ Monitoring Server Setup*
 
 1. Navigate to monitoring-server folder:
 
@@ -34,17 +34,16 @@ chmod +x setup-monitoring.sh
 ./setup-monitoring.sh
 ```
 Access Services:
-
+```
 Prometheus → http://<SERVER-IP>:9090
-
 Grafana → http://<SERVER-IP>:3000
-
+```
 Default Grafana credentials:
-
+```
 Username: admin
 Password: admin
-
-🖥 2️⃣ Worker Node Setup
+```
+*🖥 2️⃣ Worker Node Setup*
 Navigate to worker-node folder:
 ```
 cd worker-node
@@ -53,7 +52,7 @@ chmod +x setup-worker.sh
 ```
 Node Exporter will run on port 9100.
 
-🔗 3️⃣ Add Worker Node to Prometheus
+*3️⃣ Add Worker Node to Prometheus*
 Edit Prometheus config on Monitoring Server:
 ```
 sudo vi /etc/prometheus/prometheus.yml
@@ -73,7 +72,7 @@ Verify target:
 
 http://<SERVER-IP>:9090/targets
 
-🧹 4️⃣ Uninstall / Cleanup
+*🧹 4️⃣ Uninstall / Cleanup*
 Monitoring Server
 ```
 cd monitoring-server
@@ -93,7 +92,7 @@ systemctl status grafana-server
 systemctl status node_exporter
 ```
 # Expected output: "Unit not found"
-🖥 5️⃣ Loki + Promtail + Grafana Logs (Docker Setup)
+*🖥 5️⃣ Loki + Promtail + Grafana Logs (Docker Setup)*
 Install Docker
 ```
 sudo yum install -y docker
@@ -107,11 +106,11 @@ mkdir -p ~/grafana_configs
 cd ~/grafana_configs
 ```
 Download configs
-# Loki
+ Loki
 ```
 wget https://raw.githubusercontent.com/grafana/loki/v2.8.0/cmd/loki/loki-local-config.yaml -O loki-config.yaml
 ```
-# Promtail
+ Promtail
 ```
 wget https://raw.githubusercontent.com/grafana/loki/v2.8.0/clients/cmd/promtail/promtail-docker-config.yaml -O promtail-config.yaml
 ```
