@@ -16,10 +16,12 @@ All scripts are automated and can be run on **Monitoring Server** and **Worker N
 .
 ├── monitoring-server/
 │ └── setup-monitoring.sh # Prometheus + Grafana setup
-│ └── uninstall-monitoring.sh # Cleanup script
-├── worker-node/
 │ └── setup-worker.sh # Node Exporter setup
-│ └── uninstall-worker.sh # Cleanup script
+│ └── Grafana_Loki_Promtail_on_Docke
+├── rollback/
+│ └── uninstall-monitoring.sh # Cleanup script
+│ └── uninstall-worker.sh # Node Exporter setup
+│ └── uninstall-loki-promtail.sh # Cleanup script
 └── README.md
 ```
 ---
