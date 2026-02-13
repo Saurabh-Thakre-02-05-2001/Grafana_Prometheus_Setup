@@ -44,6 +44,7 @@ Username: admin
 Password: admin
 ```
 *🖥 2️⃣ Worker Node Setup*
+
 Navigate to worker-node folder:
 ```
 cd worker-node
@@ -53,6 +54,7 @@ chmod +x setup-worker.sh
 Node Exporter will run on port 9100.
 
 *3️⃣ Add Worker Node to Prometheus*
+
 Edit Prometheus config on Monitoring Server:
 ```
 sudo vi /etc/prometheus/prometheus.yml
