@@ -1,0 +1,61 @@
+#!/bin/bash
+# Filename: setup-monitoring.sh
+# Description: Setup Grafana Loki + Promtail on Docker
+
+set -e
+
+echo "=== Step 1: Install Docker ==="
+if ! command -v docker &> /dev/null
+then
+    sudo yum install -y docker
+    sudo systemctl start docker
+    sudo systemctl enable docker
+else
+    echo "Docker already installed."
+fi
+
+echo "=== Step 2: Create Grafana config directory ==="
+CONFIG_DIR="$HOME/grafana_configs"
+mkdir -p "$CONFIG_DIR"
+cd "$CONFIG_DIR"
+
+echo "=== Step 3: Download Loki and Promtail configs ==="
+wget -O loki-config.yaml https://raw.githubusercontent.com/grafana/loki/v2.8.0/cmd/loki/loki-local-config.yaml
+wget -O promtail-config.yaml https://raw.githubusercontent.com/grafana/loki/v2.8.0/clients/cmd/promtail/promtail-docker-config.yaml
+
+echo "=== Step 4: Run Loki container ==="
+if [ "$(docker ps -aq -f name=loki)" ]; then
+    echo "Stopping existing Loki container..."
+    docker rm -f loki
+fi
+
+docker run -d \
+  --name loki \
+  -v "$CONFIG_DIR":/mnt/config \
+  -p 3100:3100 \
+  grafana/loki:2.8.0 \
+  --config.file=/mnt/config/loki-config.yaml
+
+echo "Loki started on port 3100"
+
+echo "=== Step 5: Run Promtail container ==="
+if [ "$(docker ps -aq -f name=promtail)" ]; then
+    echo "Stopping existing Promtail container..."
+    docker rm -f promtail
+fi
+
+docker run -d \
+  --name promtail \
+  -v "$CONFIG_DIR":/mnt/config \
+  -v /var/log:/var/log \
+  --link loki \
+  grafana/promtail:2.8.0 \
+  --config.file=/mnt/config/promtail-config.yaml
+
+echo "Promtail started and linked to Loki"
+
+echo "=== Step 6: Setup Complete ==="
+echo "Loki URL: http://localhost:3100"
+echo "Promtail is running and sending logs to Loki"
+echo "Now go to Grafana -> Configuration -> Data Sources -> Add Loki"
+
